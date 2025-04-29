@@ -8,9 +8,9 @@ from training.train_with_aux_mask import TrainerWithAuxLossMask
 
 class PELabelMask(Config):
     working_dir = "/home/zhu/github/pe/stage2"
-    model_path = "/home/zhu/github/pe/stage2/model/"
-    log_dir = "/home/zhu/github/pe/stage2/nnlog/"
-    test_result_dir = "/home/zhu/github/pe/stage2/test_result/"
+    model_path = ""
+    log_dir = ""
+    test_result_dir = ""
 
     # model settings
     img_depth = 184
@@ -19,8 +19,8 @@ class PELabelMask(Config):
     pretrained = True
     model_head_path = ""
 
-    feature_space_dims = 64
     num_heads = 8
+    feature_space_dims = 64
     lstm_hidden_dims = 64
 
     in_chans = 3
@@ -35,11 +35,13 @@ class PELabelMask(Config):
     model_name = "coatnet" # coatnet, efficientnet, resnet, vit
 
     # training settings
-    batch_size = 4
+    batch_size = 2
     num_workers = 8
 
     data_parallel = False
     ddp = True
+
+    weight_sampler = True
 
     target_label = "pe_present_in_exam"
 
@@ -55,8 +57,8 @@ class PELabelMask(Config):
     unfreeze_head_epochs = -1
     positive_weight = 1.0
 
-    learning_rate = 1e-4
-    real_batch_size = 16
+    learning_rate = 2e-4
+    real_batch_size = 32
 
     num_epochs = 30
     t_max = 30
