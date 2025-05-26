@@ -99,10 +99,10 @@ class TrainerWithAuxLossMask(Trainer):
             )
             aux_labels = aux_labels.to(self.device, non_blocking=True)
 
-            masked_aux_label_predictions = None
-            if "masked_aux_label_predictions" in inputs_:
-                masked_aux_label_predictions = inputs_["masked_aux_label_predictions"]
-                masked_aux_label_predictions = masked_aux_label_predictions.to(
+            selected_aux_label_predictions = None
+            if "selected_aux_label_predictions" in inputs_:
+                selected_aux_label_predictions = inputs_["selected_aux_label_predictions"]
+                selected_aux_label_predictions = selected_aux_label_predictions.to(
                     self.device, non_blocking=True
                 )
 
@@ -112,8 +112,8 @@ class TrainerWithAuxLossMask(Trainer):
             # FIXME: add support for multi-output models
             if isinstance(outputs, tuple):
                 main_loss = self.criterion(outputs[0], labels)
-                if "masked_aux_label_predictions" in inputs_:
-                    _condition = masked_aux_label_predictions > 0
+                if "selected_aux_label_predictions" in inputs_:
+                    _condition = selected_aux_label_predictions > 0
                     _aux_outputs = outputs[1][_condition]
                     _aux_labels = aux_labels[_condition]
                     aux_loss = self.aux_criterion(_aux_outputs, _aux_labels).mean()
@@ -186,20 +186,20 @@ class TrainerWithAuxLossMask(Trainer):
                 aux_labels = inputs_[self.config.aux_loss_target]
                 aux_labels = aux_labels.to(self.device, non_blocking=True)
 
-                masked_aux_label_predictions = None
-                if "masked_aux_label_predictions" in inputs_:
-                    masked_aux_label_predictions = inputs_[
-                        "masked_aux_label_predictions"
+                selected_aux_label_predictions = None
+                if "selected_aux_label_predictions" in inputs_:
+                    selected_aux_label_predictions = inputs_[
+                        "selected_aux_label_predictions"
                     ]
-                    masked_aux_label_predictions = masked_aux_label_predictions.to(
+                    selected_aux_label_predictions = selected_aux_label_predictions.to(
                         self.device, non_blocking=True
                     )
 
                 outputs = self.model(images)
                 if isinstance(outputs, tuple):
                     main_loss = self.criterion(outputs[0], labels)
-                    if "masked_aux_label_predictions" in inputs_:
-                        _condition = masked_aux_label_predictions > 0
+                    if "selected_aux_label_predictions" in inputs_:
+                        _condition = selected_aux_label_predictions > 0
                         _aux_outputs = outputs[1][_condition]
                         _aux_labels = aux_labels[_condition]
                         aux_loss = self.aux_criterion(_aux_outputs, _aux_labels).mean()

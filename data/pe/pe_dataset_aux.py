@@ -103,7 +103,7 @@ class PECTVolumeAuxLoss(CTDataset):
             local_df[local_df[self.config.aux_loss_target] == 1]["SliceIndex"]
         )
         aux_target_tensor = torch.zeros((len(z_slices),), dtype=torch.float32)
-        masked_aux_label_predictions = torch.ones_like(
+        selected_aux_label_predictions = torch.ones_like(
             aux_target_tensor, dtype=torch.float32
         )
 
@@ -114,7 +114,7 @@ class PECTVolumeAuxLoss(CTDataset):
             _num_selected = min(_num_selected, self.img_depth)
             _num_masks = self.img_depth - _num_selected
             _masked_indices = np.linspace(0, self.img_depth - 1, _num_masks, dtype=int)
-            masked_aux_label_predictions[_masked_indices] = 0.0
+            selected_aux_label_predictions[_masked_indices] = 0.0
 
         for ind, z_slice in enumerate(z_slices):
             if z_slice in target_slices_with_aux_target:
@@ -124,7 +124,7 @@ class PECTVolumeAuxLoss(CTDataset):
             "images": tensor,
             "target": target,
             self.config.aux_loss_target: aux_target_tensor,
-            "masked_aux_label_predictions": masked_aux_label_predictions,
+            "selected_aux_label_predictions": selected_aux_label_predictions,
             "xy_boxes": xy_boxes,
             "z_slices": z_slices,
             "series_id": row["StudyInstanceUID"],
