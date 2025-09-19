@@ -115,11 +115,9 @@ Materializes slice supervision used by the semi‑weak loss.
 
 **Step 3 — Lung segmentation (optional)**
 ```bash
-python scripts/training_step_3_lung_segment_on_nifti.py \
-  --nifti ${WORKDIR}/nifti \
-  --out   ${WORKDIR}/masks
+python scripts/training_step_3_lung_segment_on_nifti.py
 ```
-Generates lung masks to focus the model on relevant anatomy.
+Generates lung masks to focus the model on relevant anatomy. Segmentation is based on the [TotalSegmentator](https://github.com/wasserth/TotalSegmentator) tool. Core code of the segmentator is splited and modified to fit fast preprocessing of the PE dataset. Please cite also cite it if you use this code in your work.
 
 **Step 4 — Save mask‑bounded boxes to DataFrame**
 ```bash
