@@ -62,7 +62,7 @@ pip install torch==2.4.1 torchvision==0.19.1 torchaudio==2.4.1 \
 ```
 
 ### 2) Data Format
-Download and extract the RSNA Pulmonary Embolism CT Dataset from [Kaggle](https://www.kaggle.com/competitions/rsna-pulmonary-embolism-detection/data). Arrange files as:
+Download and extract the RSNA Pulmonary Embolism CT Dataset from [Kaggle](https://www.kaggle.com/competitions/rsna-str-pulmonary-embolism-detection/data). Arrange files as:
 ```
 data/
 ├── patient_1/               # DICOM files (organized by patient/study)
